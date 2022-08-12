@@ -1,0 +1,46 @@
+﻿<shellControl:Shell x:Class="StickyNotes.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:shellControl="clr-namespace:Lib4Mu.WPF.ShellControl.Controls;assembly=Lib4Mu.WPF.ShellControl"
+        xmlns:shellUi="clr-namespace:Lib4Mu.WPF.ShellUI;assembly=Lib4Mu.WPF.ShellUI"
+        xmlns:shellControls="clr-namespace:Lib4Mu.WPF.ShellUI.Controls;assembly=Lib4Mu.WPF.ShellUI"
+        xmlns:local="clr-namespace:StickyNotes.Windows" 
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        Height="450" Width="800"
+        IconVisibility="Collapsed" 
+        WindowStyle="ToolWindow"
+        OverideAutomaticBackButton="True"
+                    >
+
+    <shellControl:Shell.TitleBarContent>
+        
+        <Grid VerticalAlignment="Center">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" HorizontalAlignment="Left" Background="Transparent" 
+                    MouseLeftButtonDown="Add_MouseLeftButtonDown" x:Name="add">
+                <iconPacks:PackIconControl Kind="{x:Static iconPacks:PackIconMaterialDesignKind.Add}" Height="14" Width="14">
+                    
+                </iconPacks:PackIconControl>
+            </Border>
+            <TextBlock Grid.Column="0" x:Name="fixedTitle" Margin="20,0,0,0"  FontSize="14">
+                
+            </TextBlock>
+
+            <Border  Grid.Column="1" HorizontalAlignment="Right"  Background="Transparent" Margin="0,0,10,0" 
+                     MouseLeftButtonDown="Settings_MouseLeftButtonDown_1" x:Name="settings">
+                <iconPacks:PackIconControl Kind="{x:Static iconPacks:PackIconBoxIconsKind.RegularCog}" Height="14" Width="14" VerticalAlignment="Center"/>
+            </Border>
+            
+        </Grid>
+        
+    </shellControl:Shell.TitleBarContent>
+    
+</shellControl:Shell>
