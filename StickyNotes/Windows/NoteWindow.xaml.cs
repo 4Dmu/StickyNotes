@@ -45,36 +45,15 @@ namespace StickyNotes.Windows
             txtBox.AppendText(vm.Note.Text);
         }
 
-        private async void PackIconControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private async void NewNoteIcon_Clicked(object sender, MouseButtonEventArgs e)
         {
-            var database = await StickyNotesDatabase.Instance;
+            if (viewModel is null)
+                return;
 
-            StickyNote note = new();
-
-            note.SetColor(Constants.DefaultBrush);
-            note.Id = Guid.NewGuid();
-            note.Date = DateTime.Now;
-            note.LastModification = DateTime.Now;
-            note.Text = String.Empty;
-
-            var res = await database.SaveGuidItemAsync(note);
-
-            Shell.Current.EventAggregator.Publish<NewStickyNoteMessage>(new NewStickyNoteMessage(note));
+            await viewModel.CreateNoteAsync();
         }
 
-        private void PackIconControl_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if (sender is PackIconControl con)
-                con.Background = new SolidColorBrush { Color = Colors.Black, Opacity = 0.3 };
-        }
-
-        private void PackIconControl_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (sender is PackIconControl con)
-                con.Background = Brushes.Transparent;
-        }
-
-        private void PackIconControl_MouseLeftButtonDown_1(object sender, MouseButtonEventArgs e)
+        private void MoreOptionsIcon_Clicked(object sender, MouseButtonEventArgs e)
         {
             if (Content is Grid parent && parent.Children.OfType<Grid>().FirstOrDefault() is Grid child)
             {
@@ -82,7 +61,7 @@ namespace StickyNotes.Windows
             }
         }
 
-        private void RichTextBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void TextBox_Clicked(object sender, MouseButtonEventArgs e)
         {
             if (Content is Grid parent && parent.Children.OfType<Grid>().FirstOrDefault() is Grid child)
             {
@@ -90,52 +69,36 @@ namespace StickyNotes.Windows
             }
         }
 
-        private async void ColorPicker_ColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private async void ChangeColor(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (e.NewValue is Color c)
-            {
-                viewModel.Note.SetColor(new StickyColor(c.R, c.G, c.B, c.A));
-                TitleBarBackground = viewModel.Note.WPFBrush;
-                var database = await StickyNotesDatabase.Instance;
-                var res = await database.SaveGuidItemAsync(viewModel.Note);
-                if (Shell.Current is not null)
-                    Shell.Current.EventAggregator.Publish<NoteColorChangedMessage>(new NoteColorChangedMessage(viewModel.Note));
-            }
+            if (e.NewValue is not Color color || viewModel is null)
+                return;
+
+            await viewModel.ChangeNoteColorAsync(color);
         }
 
         private void noteListBtn_Click(object sender, RoutedEventArgs e)
         {
-            App.ShowMainWindowAndCreateNewIfNull();
+            if (viewModel is null)
+                return;
+
+            viewModel.ShowAppMainWindow();
         }
 
         private async void deleteNoteBtn_Click(object sender, RoutedEventArgs e)
         {
-            var result = Lib4Mu.WPF.ShellUI.Controls.MessageBox.Show(this,"Do you want to delete this note?", "Confirmation", Lib4Mu.WPF.ShellUI.Controls.MessageBoxButton.YesNo, Lib4Mu.WPF.ShellUI.Controls.MessageBoxImage.Exclamation);
+            if (viewModel is null)
+                return;
 
-            if (result == Lib4Mu.WPF.ShellUI.Controls.MessageBoxResult.Yes)
-            {
-                var database = await StickyNotesDatabase.Instance;
-
-                await database.DeleteItemAsync(viewModel.Note);
-
-                App.ShowMainWindowAndCreateNewIfNull();
-                Shell.Current.EventAggregator.Publish<DeletedNoteMessage>(new DeletedNoteMessage(viewModel.Note));
-
-                this.Close();
-            }
+            await viewModel.DeleteNoteAsync(this);
         }
 
         private async void txtBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (viewModel is null)
                 return;
-            var database = await StickyNotesDatabase.Instance;
 
-            viewModel.Note.Text = new TextRange(txtBox.Document.ContentStart, txtBox.Document.ContentEnd).Text;
-            var res = await database.SaveGuidItemAsync(viewModel.Note);
-
-            if (Shell.Current is not null)
-                Shell.Current.EventAggregator.Publish<NoteTextChangedMessage>(new NoteTextChangedMessage(viewModel.Note));
+            await viewModel.ChangeNoteText(new TextRange(txtBox.Document.ContentStart, txtBox.Document.ContentEnd).Text);
         }
 
         protected override void InitCloseButton(Button closeButton)
