@@ -45,15 +45,6 @@ namespace StickyNotes.Windows
             txtBox.AppendText(vm.Note.Text);
         }
 
-        public bool IsInStickyMode
-        {
-            get { return (bool)GetValue(IsInStickyModeProperty); }
-            set { SetValue(IsInStickyModeProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsInStickyModeProperty =
-            DependencyProperty.Register("IsInStickyMode", typeof(bool), typeof(NoteWindow), new PropertyMetadata(false));
-
         private async void PackIconControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var database = await StickyNotesDatabase.Instance;
