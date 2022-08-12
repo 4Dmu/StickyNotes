@@ -11,7 +11,11 @@
             </ResourceDictionary.MergedDictionaries>
 
             <Style x:Key="NoteWindowStyle" TargetType="win:NoteWindow">
-                
+                <Style.Triggers>
+                    <Trigger Property="IsActive" Value="False">
+                        <Setter Property="TitleBarHeight" Value="10"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
         </ResourceDictionary>
     </Application.Resources>

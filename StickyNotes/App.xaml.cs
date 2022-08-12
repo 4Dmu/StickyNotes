@@ -34,6 +34,7 @@ namespace StickyNotes
         {
             _host.Start();
 
+            
             StickyNotesDatabase.Flags = Constants.Flags;
             StickyNotesDatabase.Path = Constants.DatabasePath;
             StickyNotesDatabase.AddTable<StickyNote>();

@@ -1,4 +1,5 @@
-﻿using Lib4Mu.WPF.ShellControl.Controls;
+﻿using Lib4Mu.WPF.Core.Markup;
+using Lib4Mu.WPF.ShellControl.Controls;
 using Lib4Mu.WPF.ShellUI.Controls;
 using MahApps.Metro.IconPacks;
 using StickyNotes.Data;
@@ -144,6 +145,13 @@ namespace StickyNotes.Windows
 
             if (Shell.Current is not null)
                 Shell.Current.EventAggregator.Publish<NoteTextChangedMessage>(new NoteTextChangedMessage(viewModel.Note));
+        }
+
+        protected override void InitCloseButton(Button closeButton)
+        {
+
+            closeButton.SetBinding(Button.VisibilityProperty,MarkupExtensions.CreateBinding(new PropertyPath(nameof(IsActive)), this, Lib4Mu.WPF.Core.Converters.BetterBoolToVisibilityConverter.Instance));
+            base.InitCloseButton(closeButton);
         }
     }
 }
