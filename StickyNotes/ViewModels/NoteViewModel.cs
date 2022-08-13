@@ -4,6 +4,7 @@ using Lib4Mu.WPF.ShellControl.Controls;
 using StickyNotes.Data;
 using StickyNotes.Messages;
 using StickyNotes.Models;
+using StickyNotes.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +57,9 @@ namespace StickyNotes.ViewModels
 
             // save note
             var res = await database.SaveGuidItemAsync(note);
+
+            // opens note in a window
+            new NoteWindow(new NoteViewModel(note)).Show();
 
             // allert listeners of note creation
             if (Shell.Current is not null)
