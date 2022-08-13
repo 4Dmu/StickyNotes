@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="appIcon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EasySQLite" Version="1.0.1" />
     <PackageReference Include="Lib4Mu.All.Windows" Version="1.0.7" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0-preview.6.22324.4" />
@@ -30,9 +34,11 @@
 		<NugetTools>$(PkgNuGet_CommandLine)\tools</NugetTools>
 		<SquirrelTools>$(Pkgsquirrel_windows)\tools</SquirrelTools>
 
-		<Version>1.0.1</Version>
+		<Version>1.0.2</Version>
 
 		<NuspecFile>$(SolutionDir)StickyNotes\ReleaseSpec.nuspec</NuspecFile>
+
+		<ApplicationIcon>appIcon.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<Target Name="GenerateRelease" AfterTargets="AfterBuild" Condition="$(Configuration) == Release">
