@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>StickyNotes</id>
+    <version>0.0.0</version>
+    <title>StickyNotes</title>
+    <authors>4Dmu</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <!-- <icon>icon.png</icon> -->
+    <projectUrl>https://github.com/4Dmu/StickyNotes</projectUrl>
+    <description>A simple clone of microsoft's windows 11 sticky notes app.</description>
+    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <copyright>$copyright$</copyright>
+    <tags>StickyNotes</tags>
+  </metadata>
+
+	<files>
+		<file src="bin\Release\net6.0-windows\**" target="lib\net45"/>
+	</files>
+</package>
