@@ -7,7 +7,7 @@
     <authors>4Dmu</authors>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <license type="expression">MIT</license>
-    <!-- <icon>icon.png</icon> -->
+    <icon>images\appIcon.png</icon>
     <projectUrl>https://github.com/4Dmu/StickyNotes</projectUrl>
     <description>A simple clone of microsoft's windows 11 sticky notes app.</description>
     <releaseNotes>Initial release</releaseNotes>
@@ -17,5 +17,6 @@
 
 	<files>
 		<file src="bin\Release\net6.0-windows\**" target="lib\net45"/>
+		<file src="..\StickyNotes\appIcon.png" target="images\" />
 	</files>
 </package>
