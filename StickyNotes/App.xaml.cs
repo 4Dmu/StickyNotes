@@ -1,6 +1,7 @@
 ﻿using Lib4Mu.Core.ExtensionMethods;
 using Lib4Mu.WPF.ShellControl.Controls;
 using Microsoft.Extensions.Hosting;
+using Squirrel;
 using StickyNotes.Data;
 using StickyNotes.Models;
 using StickyNotes.ViewModels;
@@ -11,6 +12,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -18,7 +20,9 @@ namespace StickyNotes
 {
     public partial class App : Application
     {
-        IHost _host; 
+        IHost _host;
+        UpdateManager _manager;
+        SynchronizationContext _syncContext;
 
         public App()
         {
@@ -34,6 +38,12 @@ namespace StickyNotes
         {
             _host.Start();
 
+            _manager = await UpdateManager
+                .GitHubUpdateManager(@"https://github.com/4Dmu/StickyNotes");
+
+            _syncContext = SynchronizationContext.Current;
+
+            await CheckForUpdatesAsync();
             
             StickyNotesDatabase.Flags = Constants.Flags;
             StickyNotesDatabase.Path = Constants.DatabasePath;
@@ -61,6 +71,35 @@ namespace StickyNotes
             Shell.Current.ToggleTheme();
 
             base.OnStartup(e);
+        }
+
+        private async Task CheckForUpdatesAsync()
+        {
+            var updates = await _manager.CheckForUpdate();
+
+            if (updates.ReleasesToApply.Count > 0)
+            {
+                await UpdateAppAsync();
+            }
+        }
+
+        private async Task UpdateAppAsync()
+        {
+            var window = new ProgressWindow();
+            window.Title = "Update";
+            window.Message = "We're downloading and update, please wait...";
+            window.Show();
+
+            Action<int> progress = delegate (int value)
+            {
+                _syncContext.Post(o => window.Progress = value, null);
+            };
+
+            await _manager.UpdateApp(progress);
+
+            window.Close();
+
+            Lib4Mu.WPF.ShellUI.Controls.MessageBox.Show("App updated sucessfully, please restart to so the update can take effect");
         }
 
         private async Task<Window> GetLatestNote()

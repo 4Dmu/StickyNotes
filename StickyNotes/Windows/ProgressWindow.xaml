@@ -1,0 +1,29 @@
+﻿<shellControls:ShellWindow x:Class="StickyNotes.Windows.ProgressWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StickyNotes.Windows"
+        xmlns:shellUI="clr-namespace:Lib4Mu.WPF.ShellUI;assembly=Lib4Mu.WPF.ShellUI"
+        xmlns:shellControls="clr-namespace:Lib4Mu.WPF.ShellUI.Controls;assembly=Lib4Mu.WPF.ShellUI"
+        mc:Ignorable="d"
+        Height="200" Width="400"
+        WindowStyle="ToolWindow" x:Name="window">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock  Text="{Binding Message,ElementName=window}" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Center" 
+                    FontSize="15"/>
+        
+        <ProgressBar  Grid.Row="1" 
+                      Height="30" 
+                      Value="{Binding Progress,ElementName=window}"/>
+    </Grid>
+</shellControls:ShellWindow>

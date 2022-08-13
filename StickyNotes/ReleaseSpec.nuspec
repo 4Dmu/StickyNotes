@@ -10,7 +10,7 @@
     <!-- <icon>icon.png</icon> -->
     <projectUrl>https://github.com/4Dmu/StickyNotes</projectUrl>
     <description>A simple clone of microsoft's windows 11 sticky notes app.</description>
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <releaseNotes>Initial release</releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>StickyNotes</tags>
   </metadata>
