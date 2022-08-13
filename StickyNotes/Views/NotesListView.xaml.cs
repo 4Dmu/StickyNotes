@@ -30,77 +30,126 @@ namespace StickyNotes.Views
         public NotesListView(NotesListViewModel vm)
         {
             InitializeComponent();
+
+            // set datacontext to inputed view model
             this.DataContext = vm;
+
+            // subcribe to events
             this.Loaded += async (s, e) =>
             {
+                // get the notes
                 await viewModel.GetNotesAsync();
             };
         }
 
         private void SfMaskedEdit_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
+            // make sure event is not propigated to other controls
             e.Handled = true;
 
+            // create new event with the old one's data
             var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
 
+            // set the new event's routed event to UIElement.MouseWheelEvent;
             eventArg.RoutedEvent = UIElement.MouseWheelEvent;
 
+            // set the source to the original events sender
             eventArg.Source = sender;
-            mainScroll.RaiseEvent(eventArg);
 
+            // raise this event on the main scroll viewer
+            mainScroll.RaiseEvent(eventArg);
         }
 
         private void NoteInstance_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (sender is Border p && p.Child is Grid p2 && p2.Children.Count >= 2 && p2.Children[0] is TextBlock t && p2.Children[1] is PackIconControl pic)
+            // check if sender is border and border's child's children are texblock and packicon
+            if (sender is Border parent
+                && parent.Child is Grid child
+                && child.Children.Count >= 2
+                && child.Children[0] is TextBlock textBlock
+                && child.Children[1] is PackIconControl packIcon)
             {
-                t.Visibility = Visibility.Collapsed;
-                pic.Visibility = Visibility.Visible;
+                // set textblock's visiblity to collapsed
+                textBlock.Visibility = Visibility.Collapsed;
+
+                // set packicon's visibility to visible
+                packIcon.Visibility = Visibility.Visible;
             }
         }
 
         private void NoteInstance_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (sender is Border p && p.Child is Grid p2 && p2.Children.Count >= 2 && p2.Children[0] is TextBlock t && p2.Children[1] is PackIconControl pic)
+            // check if sender is border and border's child's children are texblock and packicon
+            if (sender is Border parent
+                && parent.Child is Grid child
+                && child.Children.Count >= 2
+                && child.Children[0] is TextBlock t
+                && child.Children[1] is PackIconControl pic)
             {
+                // set textblock's visiblity to visible
                 t.Visibility = Visibility.Visible;
+
+                // set packicon's visibility to collapsed
                 pic.Visibility = Visibility.Collapsed;
             }
         }
 
         private void CloseMoreOptionsMenu_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is Grid p && p.Children.OfType<Grid>().FirstOrDefault() is Grid control && control.Visibility == Visibility.Visible)
+            // check if sender is grid and one of grid's children is grid and grid's visibitly is set to visible
+            if (sender is Grid parent
+                && parent.Children.OfType<Grid>().FirstOrDefault() is Grid child
+                && child.Visibility == Visibility.Visible)
             {
-                control.Visibility = Visibility.Collapsed;
+                // set child's visibility to collapsed
+                child.Visibility = Visibility.Collapsed;
             }
-            else
-                if (sender is Grid p1 && p1.DataContext is StickyNote note)
-                    OpenNote(note);
+            
+            // else check if sender is grid and grid's datacontext is note
+            else if (sender is Grid parent2 && parent2.DataContext is StickyNote note)
+            {
+                // open the note
+                OpenNote(note);
+            }
         }
 
         private void OpenNote(StickyNote note)
         {
+            // create a new NoteWindow
             var window = new NoteWindow(new NoteViewModel(note));
 
+            // show the window
             window.Show();
         }
 
         private void SfMaskedEdit_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is SfMaskedEdit ed && ed.Parent is Grid p1 && p1.Children.OfType<Grid>().FirstOrDefault() is Grid control1 && control1.Visibility == Visibility.Visible)
+            // check if sender is SfMaskedEdit and SfMaskedEdit's sibling is grid and grid's visibility is set to visible
+            if (sender is SfMaskedEdit child
+                && child.Parent is Grid parent
+                && parent.Children.OfType<Grid>().FirstOrDefault() is Grid sibling
+                && sibling.Visibility == Visibility.Visible)
             {
-                control1.Visibility = Visibility.Collapsed;
+                // set siblings visibility to collapsed
+                sibling.Visibility = Visibility.Collapsed;
             }
-            else
-                if (sender is SfMaskedEdit ed1 && ed1.Parent is Grid p2 && p2.DataContext is StickyNote note)
-                    OpenNote(note);
+
+            // else check if sender os SfMaskedEdit and SfMaskedEdit's parent's datacontext is note
+            else if (sender is SfMaskedEdit child2 && child2.Parent is Grid parent2 && parent2.DataContext is StickyNote note)
+            {
+                // open the note
+                OpenNote(note);
+            }
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (e.Source is TextBox tbox)
-                viewModel.Filter(tbox.Text);
+            // check if source is textbox
+            if (e.Source is TextBox textBox)
+            {
+                // filter the note list using the textbox's text
+                viewModel.Filter(textBox.Text);
+            }
         }
     }
 }

@@ -15,7 +15,8 @@
         TitleBarBackground="{Binding RelativeSource={RelativeSource Mode=Self}, Path=DataContext.Note.WPFBrush}"
         WindowStyle="ToolWindow"
         IconVisibility="Collapsed"
-        Style="{StaticResource NoteWindowStyle}">
+        Style="{StaticResource NoteWindowStyle}"
+        x:Name="prnt">
     
     <shellControls:ShellWindow.TitleBarContent>
         <Grid 
@@ -60,7 +61,7 @@
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            
+
             <syncfusion:ColorPicker Color="{Binding DataContext.Note.WPFColor,ElementName=prnt}" 
                                     ColorChanged="ChangeColor"/>
             <Button Grid.Row="1" 

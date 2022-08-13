@@ -75,6 +75,8 @@ namespace StickyNotes.Windows
                 return;
 
             await viewModel.ChangeNoteColorAsync(color);
+
+            TitleBarBackground = viewModel.Note.WPFBrush;
         }
 
         private void noteListBtn_Click(object sender, RoutedEventArgs e)

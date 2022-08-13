@@ -20,19 +20,23 @@ namespace StickyNotes.ViewModels
 
         public NoteViewModel(StickyNote note)
         {
+            // set properties
             Note = note;
         }
 
         private StickyNote NewStickyNote()
         {
+            // create new note
             StickyNote note = new();
 
+            // set notes properties
             note.SetColor(Constants.DefaultBrush);
             note.Id = Guid.NewGuid();
             note.Date = DateTime.Now;
             note.LastModification = DateTime.Now;
             note.Text = String.Empty;
 
+            // return created note
             return note;
         }
 
